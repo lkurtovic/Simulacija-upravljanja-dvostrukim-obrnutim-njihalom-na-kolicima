@@ -41,7 +41,7 @@ Ai = np.eye(n)
 for _ in range(1, n):
     Ai = Ai @ A
     cols.append(Ai @ B)
-Co = np.hstack(cols)  # ovo je sada matrica 6x6 napravljena od matrica iz liste
+Co = np.hstack(cols)
 
 # ---- singularne vrijednosti i rang preko njih ----
 sigma = np.linalg.svd(Co, compute_uv=False)

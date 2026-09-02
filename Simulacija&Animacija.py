@@ -89,7 +89,7 @@ print("Graf odziva spremljen kao 'odzivi.png'")
 # =========================================================================
 # 6) ANIMACIJA - KAMERA PRATI KOLICA
 # =========================================================================
-half_width = l1 + l2 + 0.3   # koliko sirok "prozor" oko kolica zelimo
+half_width = l1 + l2 + 0.3
 cart_w, cart_h = 0.2, 0.1
 
 fig2, ax = plt.subplots(figsize=(6, 6))
@@ -112,7 +112,6 @@ def update(frame):
     x1, y1 = q + l1*np.sin(th1), l1*np.cos(th1)
     x2, y2 = x1 + l2*np.sin(th2), y1 + l2*np.cos(th2)
 
-    # <<< KAMERA PRATI KOLICA: pomakni granice x-osi oko trenutne pozicije q
     ax.set_xlim(q - half_width, q + half_width)
 
     ground.set_data([q - half_width, q + half_width], [0, 0])
