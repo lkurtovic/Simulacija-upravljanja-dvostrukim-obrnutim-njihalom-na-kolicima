@@ -4,13 +4,11 @@ from scipy.integrate import solve_ivp
 
 trapz = np.trapezoid if hasattr(np, 'trapezoid') else np.trapz
 
-# ---- fizikalni parametri ----
 m, m1, m2 = 1.0, 0.3, 0.2
 l1, l2 = 0.3, 0.25
 d1, d2, d3 = 0.1, 0.05, 0.05
 g = 9.81
 
-# ---- linearizirani model ----
 M0 = np.array([[m+m1+m2, l1*(m1+m2), m2*l2],
                [l1*(m1+m2), l1**2*(m1+m2), l1*l2*m2],
                [l2*m2, l1*l2*m2, l2**2*m2]])
@@ -19,19 +17,23 @@ S = np.array([[0, 0, 0],
               [0, 0, g*l2*m2]])
 D = np.diag([d1, d2, d3])
 Bu = np.array([[1.], [0.], [0.]])
-M0inv = np.linalg.inv(M0)
+
+RHS = np.hstack([S, D, Bu])
+SOL = np.linalg.solve(M0, RHS)
+M0inv_S = SOL[:, 0:3]
+M0inv_D = SOL[:, 3:6]
+M0inv_Bu = SOL[:, 6:7]
 
 A = np.zeros((6, 6))
 A[0:3, 3:6] = np.eye(3)
-A[3:6, 0:3] = M0inv @ S
-A[3:6, 3:6] = -M0inv @ D
+A[3:6, 0:3] = M0inv_S
+A[3:6, 3:6] = -M0inv_D
 
 B = np.zeros((6, 1))
-B[3:6, :] = M0inv @ Bu
+B[3:6, :] = M0inv_Bu
 
 
 def nonlin(t, x, Kctrl):
-    """Puni nelinearni model M(y) yddot = f(y,ydot,u,0), s regulatorom u=-K x."""
     q, th1, th2, qd, th1d, th2d = x
     u = float(-Kctrl @ x)
     M = np.array([
@@ -64,7 +66,7 @@ def evaluate(Kctrl, label, x0, tfinal=8):
           f"max|u|={max_u:8.1f}N  trud={effort:10.1f}  t_smirivanja={settle_str}\n")
 
 
-x0 = [0, np.deg2rad(15), np.deg2rad(-10), 0, 0, 0]
+x0 = [0, np.deg2rad(10), np.deg2rad(-10), 0, 0, 0]
 
 print("--- LQR (razlicite tezine Q, R) ---\n")
 for Qdiag, R, name in [
@@ -73,6 +75,7 @@ for Qdiag, R, name in [
     ([1, 20, 20, 1, 5, 5], 1,     "LQR - stedi silu"),
 ]:
     Q = np.diag(Qdiag).astype(float)
-    P = solve_continuous_are(A, B, Q, np.array([[R]]))
-    Klqr = (np.linalg.inv([[R]]) @ B.T @ P).flatten()
+    Rmat = np.array([[R]], dtype=float)
+    P = solve_continuous_are(A, B, Q, Rmat)
+    Klqr = np.linalg.solve(Rmat, B.T @ P).flatten()
     evaluate(Klqr, name, x0)

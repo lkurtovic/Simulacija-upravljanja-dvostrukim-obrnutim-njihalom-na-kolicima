@@ -1,7 +1,7 @@
 import numpy as np
 
-m, m1, m2 = 1.0, 0.3, 0.2
-l1, l2 = 0.3, 0.25
+m, m1, m2 = 1.0, 3000, 0.2
+l1, l2 = 0.3, 4.5
 d1, d2, d3 = 0.1, 0.05, 0.05
 g = 9.81
 
@@ -41,7 +41,7 @@ Ai = np.eye(n)
 for _ in range(1, n):
     Ai = Ai @ A
     cols.append(Ai @ B)
-Co = np.hstack(cols)
+Co = np.hstack(cols)  # ovo je sada matrica 6x6 napravljena od matrica iz liste
 
 # ---- singularne vrijednosti i rang preko njih ----
 sigma = np.linalg.svd(Co, compute_uv=False)

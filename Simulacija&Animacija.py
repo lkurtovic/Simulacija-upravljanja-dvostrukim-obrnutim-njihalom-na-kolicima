@@ -41,7 +41,7 @@ B[3:6, :] = M0inv_Bu
 # =========================================================================
 # 3) LQR REGULATOR
 # =========================================================================
-Q = np.diag([1., 100., 100., 1., 10., 10.])
+Q = np.diag([1., 20., 20., 1., 5., 5.])
 R = np.array([[1.]])
 P = solve_continuous_are(A, B, Q, R)
 Kctrl = np.linalg.solve(R, B.T @ P).flatten()
@@ -65,11 +65,12 @@ def nonlinear_dynamics(t, x):
     yddot = np.linalg.solve(M, f)
     return [qd, th1d, th2d, yddot[0], yddot[1], yddot[2]]
 
-x0 = [0, np.deg2rad(1), np.deg2rad(-1), 0, 0, 0]
+x0 = [0, np.deg2rad(10), np.deg2rad(-10), 0, 0, 0]
 t_final = 8
 fps = 30
 t_eval = np.linspace(0, t_final, int(t_final*fps))
-sol = solve_ivp(nonlinear_dynamics, [0, t_final], x0, t_eval=t_eval, max_step=0.01)
+sol = solve_ivp(nonlinear_dynamics, [0, t_final], x0, t_eval=t_eval,
+                 max_step=0.01, rtol=1e-9, atol=1e-11)
 X = sol.y
 
 # =========================================================================
@@ -85,6 +86,7 @@ axs[3].plot(sol.t, u_hist); axs[3].set_ylabel('u [N]'); axs[3].set_xlabel('t [s]
 fig1.tight_layout()
 fig1.savefig('odzivi.png', dpi=120)
 print("Graf odziva spremljen kao 'odzivi.png'")
+print(f"th1(kraj)={np.rad2deg(X[1,-1]):.2f}deg  th2(kraj)={np.rad2deg(X[2,-1]):.2f}deg  q(kraj)={X[0,-1]:.2f}m")
 
 # =========================================================================
 # 6) ANIMACIJA - KAMERA PRATI KOLICA
@@ -111,9 +113,7 @@ def update(frame):
     q, th1, th2 = X[0, frame], X[1, frame], X[2, frame]
     x1, y1 = q + l1*np.sin(th1), l1*np.cos(th1)
     x2, y2 = x1 + l2*np.sin(th2), y1 + l2*np.cos(th2)
-
     ax.set_xlim(q - half_width, q + half_width)
-
     ground.set_data([q - half_width, q + half_width], [0, 0])
     cart_patch.set_xy((q - cart_w/2, -cart_h/2))
     link1.set_data([q, x1], [0, y1])
@@ -126,6 +126,5 @@ def update(frame):
 
 ani = animation.FuncAnimation(fig2, update, frames=len(sol.t),
                                interval=1000/fps, blit=False)
-
 ani.save('animacija_njihala_kamera.gif', writer='pillow', fps=fps)
 print("Animacija (kamera prati kolica) spremljena kao 'animacija_njihala_kamera.gif'")
