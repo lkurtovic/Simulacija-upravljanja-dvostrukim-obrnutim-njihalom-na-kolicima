@@ -31,7 +31,7 @@ def nonlinear_dynamics(t, x):
     return [qd, th1d, th2d, yddot[0], yddot[1], yddot[2]]
 
 x0 = [0, np.deg2rad(1), np.deg2rad(-1), 0, 0, 0]
-t_final = 8   # sustav divergira brzo bez regulatora, ne treba 8s
+t_final = 8
 fps = 30
 t_eval = np.linspace(0, t_final, int(t_final*fps))
 sol = solve_ivp(nonlinear_dynamics, [0, t_final], x0, t_eval=t_eval, max_step=0.002)
@@ -74,7 +74,6 @@ def update(frame):
     x1, y1 = q + l1*np.sin(th1), l1*np.cos(th1)
     x2, y2 = x1 + l2*np.sin(th2), y1 + l2*np.cos(th2)
 
-    # <<< KAMERA PRATI KOLICA: pomakni granice x-osi oko trenutne pozicije q
     ax.set_xlim(q - half_width, q + half_width)
 
     ground.set_data([q - half_width, q + half_width], [0, 0])
@@ -84,11 +83,8 @@ def update(frame):
     mass1.set_data([x1], [y1])
     mass2.set_data([x2], [y2])
     time_txt.set_text(f't = {sol.t[frame]:.2f} s')
-    # blit=False, pa ne moramo vracati listu artista, ali ne smeta ako vratimo
     return cart_patch, link1, link2, mass1, mass2, time_txt, ground
 
-
-# blit=False JER se x-limiti (osi) mijenjaju svaki frame - blit to ne bi iscrtao ispravno
 ani = animation.FuncAnimation(fig2, update, frames=len(sol.t),
                                interval=1000/fps, blit=False)
 

@@ -46,7 +46,7 @@ Kctrl = np.linalg.solve(R, B.T @ P).flatten()
 # =========================================================================
 # 3) VANJSKA SMETNJA w(t) -- kratak "udar vjetra" (moment) na prvi zglob
 # =========================================================================
-W2_MAG = 0.05      # N*m
+W2_MAG = 0.05
 T_START, T_END = 2.0, 2.3   # smetnja djeluje izmedu 2.0s i 2.3s
 
 
@@ -153,7 +153,6 @@ def update(frame):
     x1, y1 = q + l1*np.sin(th1), l1*np.cos(th1)
     x2, y2 = x1 + l2*np.sin(th2), y1 + l2*np.cos(th2)
 
-    # <<< KAMERA PRATI KOLICA
     ax.set_xlim(q - half_width, q + half_width)
 
     ground.set_data([q - half_width, q + half_width], [0, 0])

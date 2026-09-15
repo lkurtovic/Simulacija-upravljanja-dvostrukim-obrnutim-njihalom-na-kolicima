@@ -31,8 +31,8 @@ B[3:6, :] = M0inv @ Bu
 #   x = [q, theta1, theta2, qdot, theta1dot, theta2dot]
 #   J = integral( x'Qx + u'Ru ) dt      (C = I, tj. y = x, vidi Hespanha 10.1)
 # =========================================================================
-Q = np.diag([1., 100., 100., 1., 10., 10.])   # tezine na stanje
-R = np.array([[1.]])                           # tezina na upravljacku silu
+Q = np.diag([1., 100., 100., 1., 10., 10.])
+R = np.array([[1.]])
 
 # 1) rijesi Algebarsku Riccatijevu jednadzbu:  A'P + PA - PBR^-1B'P + Q = 0
 P = solve_continuous_are(A, B, Q, R)

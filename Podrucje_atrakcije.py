@@ -76,7 +76,6 @@ else:
 
 
 def kljuc(th1, th2):
-    # cijeli brojevi, jer je mreza sad definirana cjelobrojnim korakom
     return f"{int(round(th1))},{int(round(th2))}"
 
 
@@ -103,7 +102,6 @@ KORAK = 1
 
 th2_vals = np.arange(-RASPON_TH2, RASPON_TH2 + 1, KORAK)
 
-# nove tocke: theta1 lijevo od starog raspona I theta1 desno od starog raspona
 th1_novi = list(np.arange(-RASPON_TH1, -STARI_RASPON_TH1, KORAK)) + \
            list(np.arange(STARI_RASPON_TH1 + 1, RASPON_TH1 + 1, KORAK))
 
