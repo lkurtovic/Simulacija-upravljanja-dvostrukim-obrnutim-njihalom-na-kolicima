@@ -65,7 +65,7 @@ def nonlinear_dynamics(t, x):
     yddot = np.linalg.solve(M, f)
     return [qd, th1d, th2d, yddot[0], yddot[1], yddot[2]]
 
-x0 = [0, np.deg2rad(10), np.deg2rad(-10), 0, 0, 0]
+x0 = [0, np.deg2rad(20), np.deg2rad(-20), 0, 0, 0]
 t_final = 8
 fps = 30
 t_eval = np.linspace(0, t_final, int(t_final*fps))
