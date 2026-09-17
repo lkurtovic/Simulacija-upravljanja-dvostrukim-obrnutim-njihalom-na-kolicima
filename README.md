@@ -1,8 +1,8 @@
 # Simulacija upravljanja dvostrukim obrnutim njihalom na kolicima
 
-Završni rad — Sveučilište Josipa Jurja Strossmayera u Osijeku, Fakultet primijenjene matematike i informatike.
+Završni praktični projekt — Sveučilište Josipa Jurja Strossmayera u Osijeku, Fakultet primijenjene matematike i informatike.
 
-Rad razmatra sustav dvostrukog obrnutog njihala na pokretnim kolicima: izvodi se nelinearni fizikalni model, model se linearizira oko uspravne ravnoteže, provjerava se upravljivost sustava, analiziraju polovi otvorene petlje, te se dizajnira regulator stanja metodom linearno-kvadratne regulacije (LQR). Dobiveni regulator naposljetku se testira na punom nelinearnom modelu za nekoliko različitih početnih otklona, na vanjsku smetnju, te se istražuje njegovo područje atrakcije.
+Završni praktični projekt razmatra sustav dvostrukog obrnutog njihala na pokretnim kolicima: izvodi se nelinearni fizikalni model, model se linearizira oko uspravne ravnoteže, provjerava se upravljivost sustava, analiziraju polovi otvorene petlje, te se dizajnira regulator stanja metodom linearno-kvadratne regulacije (LQR). Dobiveni regulator naposljetku se testira na punom nelinearnom modelu za nekoliko različitih početnih otklona, na vanjsku smetnju, te se istražuje njegovo područje atrakcije.
 
 ## Sadržaj repozitorija
 
